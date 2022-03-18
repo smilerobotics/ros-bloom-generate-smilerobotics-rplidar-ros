@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        ROS_DISTRO: ["melodic", "noetic"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: smilerobotics/actions-ros-bloom-generate@v1
+        with:
+          repository_owner: smilerobotics
+          repository: rplidar_ros
+          ref: reconfigure
+          ros_distro: ${{ matrix.ROS_DISTRO }}
+          targets: ./rplidar_ros
+          name_prefix: ${{ matrix.ROS_DISTRO }}-
+          repository_type: github
